@@ -17,7 +17,7 @@ import {
 import { testNowPlayingConnection } from './core/nowPlayingProvider';
 import { initCopyUrlButton } from './core/copyUrl';
 import { showToast, attachModalDismiss } from './core/uiHelpers';
-import { initTemplateDropdown, rebuildTemplateDropdown } from './core/templateDropdown';
+import { initTemplateButtons, rebuildTemplateButtons } from './core/templateButtons';
 
 console.log('%cPV Tool%c solaris:0914', 'color:#6688cc;font-weight:bold', 'color:#888');
 
@@ -83,6 +83,7 @@ app.innerHTML = `
           <button class="swatch" data-color="#EEDD11" title="${t('yellow')}" style="background:#EEDD11"></button>
           <button class="swatch" data-color="#f5c6d0" title="${t('pink')}" style="background:#f5c6d0"></button>
           <button class="swatch" data-color="#ED1C24" title="${t('p5red')}" style="background:#ED1C24"></button>
+          <button class="swatch" data-color="#ABC5D2" title="${t('light_blue')}" style="background:#ABC5D2"></button>
         </div>
       </div>
 
@@ -317,6 +318,14 @@ app.innerHTML = `
 
   <button class="mobile-toggle" id="mobile-toggle" title="☰">☰</button>
   <div id="pv-container"></div>
+
+  <footer class="pv-footer" id="pv-footer">
+    <span class="pv-footer-desc">${t('footer_desc')}</span>
+    <span class="pv-footer-sep">·</span>
+    <a href="https://github.com/DanteAlighieri13210914/pv-tool" target="_blank" rel="noopener" class="pv-footer-link">GitHub</a>
+    <span class="pv-footer-sep">·</span>
+    <a href="${import.meta.env.BASE_URL}contributors.html" target="_blank" class="pv-footer-link">${t('footer_contributors')}</a>
+  </footer>
 `;
 
 const engine = new PVEngine();
@@ -358,7 +367,7 @@ engine.init(container).then(() => {
   syncOpacitySlider();
   syncPostfxSliders();
   updateTemplateButtons();
-  initTemplateDropdown(templateSelect, () => customTemplates);
+  initTemplateButtons(templateSelect, () => customTemplates);
 
   // URL param: bg (transparent background)
   const bgParam = urlParams.get('bg');
@@ -543,7 +552,7 @@ function rebuildTemplateSelect() {
     `<option value="user-${i}">⭐ ${tp.name}</option>`
   ).join('');
   templateSelect.innerHTML = builtInHtml + customHtml + `<option value="custom">${t('custom')}</option>`;
-  rebuildTemplateDropdown();
+  rebuildTemplateButtons();
 }
 
 function updateTemplateButtons() {
@@ -554,7 +563,7 @@ function updateTemplateButtons() {
   // Hide inline inputs when switching
   tplSaveInput.style.display = 'none';
   tplDeleteConfirm.style.display = 'none';
-  rebuildTemplateDropdown();
+  rebuildTemplateButtons();
 }
 
 const tplSaveBtn = document.getElementById('tpl-save')!;

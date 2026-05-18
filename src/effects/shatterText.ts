@@ -86,14 +86,14 @@ export class ShatterText extends BaseEffect {
     this.builtForHeight = sh;
     if (!text) return;
 
-    const fontSize = this.config.fontSize ?? 120;
+    const baseFontSize = this.config.fontSize ?? 120;
     const fontFamily = this.config.fontFamily ?? '"Noto Serif JP", "Yu Mincho", serif';
     const fontWeight = String(this.config.fontWeight ?? '900');
     const color = resolveColor(this.config.color ?? '$text', this.palette);
     const alphaThreshold = this.config.alphaThreshold ?? 128;
     const minAreaFrac = this.config.minAreaFrac ?? 0.001;
     const preErosionIters = Math.max(0, this.config.preErosionIters ?? 0);
-    const charSpacing = (this.config.charSpacingFrac ?? 1.05) * fontSize;
+    const charSpacingFrac = this.config.charSpacingFrac ?? 1.05;
     const scatterRadiusFrac = this.config.scatterRadiusFrac ?? 0.3;
     const scatterScaleMin = this.config.scatterScaleMin ?? 0.4;
     const staggerDelayPerChar = this.config.staggerDelay ?? 0.05;
@@ -103,6 +103,15 @@ export class ShatterText extends BaseEffect {
 
     const chars = [...text];
     const cy = sh * (this.config.y ?? 0.5);
+    const horizontalMargin = this.config.fitMarginX ?? 0.86;
+    const verticalMargin = this.config.fitMarginY ?? 0.75;
+    const maxByWidth = chars.length > 1
+      ? (sw * horizontalMargin) / ((chars.length - 1) * charSpacingFrac + 1)
+      : sw * horizontalMargin;
+    const maxByHeight = Math.max(24, Math.min(cy, sh - cy) * 2 * verticalMargin);
+    const minFontSize = this.config.minFontSize ?? 24;
+    const fontSize = Math.max(minFontSize, Math.min(baseFontSize, maxByWidth, maxByHeight));
+    const charSpacing = charSpacingFrac * fontSize;
     const totalWidth = (chars.length - 1) * charSpacing;
     const startX = sw / 2 - totalWidth / 2;
 

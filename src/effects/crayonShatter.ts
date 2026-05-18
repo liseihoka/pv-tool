@@ -844,18 +844,35 @@ export class CrayonShatter extends BaseEffect {
     this.builtForHeight = sh;
     if (!text) return;
 
-    const fontSize = this.config.fontSize ?? 130;
+    const baseFontSize = this.config.fontSize ?? 130;
     const fontFamily = this.config.fontFamily
       ?? '"Yu Gothic", "Hiragino Sans", "Helvetica Neue", Arial, sans-serif';
     const fontWeight = String(this.config.fontWeight ?? '700');
     const alphaThreshold = this.config.alphaThreshold ?? 60;
     const minAreaFrac = this.config.minAreaFrac ?? 0.001;
     const preErosionIters = Math.max(0, this.config.preErosionIters ?? 0);
-    const charSpacing = (this.config.charSpacingFrac ?? 1.05) * fontSize;
-    // Two-column vertical layout: first half of the string in the right
-    // column (read first, traditional CJK reading order), second half in
-    // the left column. colSpacingFrac controls inter-column gap.
-    const colSpacing = (this.config.colSpacingFrac ?? 1.4) * fontSize;
+    const charSpacingFrac = this.config.charSpacingFrac ?? 1.05;
+    const colSpacingFrac = this.config.colSpacingFrac ?? 1.4;
+
+    // Auto-scale fontSize so all characters fit within the screen.
+    const chars0 = [...text];
+    const half0 = Math.ceil(chars0.length / 2);
+    const maxRows0 = chars0.length > 1 ? Math.max(half0, chars0.length - half0) : 1;
+    const marginV = 0.85;
+    const marginH = 0.80;
+    let fontSize = baseFontSize;
+    if (maxRows0 > 1) {
+      const maxByHeight = (sh * marginV) / ((maxRows0 - 1 + 1) * charSpacingFrac);
+      fontSize = Math.min(fontSize, maxByHeight);
+    }
+    if (chars0.length > 1) {
+      const maxByWidth = (sw * marginH) / (colSpacingFrac + 1);
+      fontSize = Math.min(fontSize, maxByWidth);
+    }
+    fontSize = Math.max(fontSize, 24);
+
+    const charSpacing = charSpacingFrac * fontSize;
+    const colSpacing = colSpacingFrac * fontSize;
     const dpr = this.renderer?.resolution ?? 1;
 
     const colorList = resolveColorList(this.config.colors, this.palette);
