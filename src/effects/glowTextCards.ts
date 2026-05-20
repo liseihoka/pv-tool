@@ -107,7 +107,6 @@ export class GlowTextCards extends BaseEffect {
         const style = new PIXI.TextStyle({
           fontFamily,
           fontSize,
-          fontWeight: '',
           fill: textColor,
         });
         const t = new PIXI.Text({ text: char, style });
