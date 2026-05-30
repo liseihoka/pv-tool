@@ -113,3 +113,4 @@ export class HeroText extends BaseEffect {
     }
   }
 }
+declare module '*.ttf';
