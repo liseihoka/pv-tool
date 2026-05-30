@@ -5,6 +5,7 @@ import * as PIXI from 'pixi.js';
 import { BaseEffect } from './base';
 import type { UpdateContext } from '../core/types';
 import { resolveColor } from '../core/types';
+import myCustomFontUrl from './FangZhengZiJi-LvJianDeXingKaiFanTi-1.ttf';
 
 export class HeroText extends BaseEffect {
   readonly name = 'heroText';
@@ -15,11 +16,27 @@ export class HeroText extends BaseEffect {
   private pendingText = '';
   private textAlpha = 1;
   private fadeState: 'idle' | 'fadeOut' | 'fadeIn' = 'idle';
+  if (typeof window !== 'undefined') {
+  const fontName = 'CustomKai';
+  if (!document.getElementById('dynamic-font-kai')) {
+    const style = document.createElement('style');
+    style.id = 'dynamic-font-kai';
+    style.appendChild(document.createTextNode(`
+      @font-face {
+        font-family: '${fontName}';
+        src: url('${myCustomFontUrl}') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+    `));
+    document.head.appendChild(style);
+  }
+}
 
   protected setup(): void {
     const text = this.config._userText ?? this.config.text ?? '';
     const fontSize = this.config.fontSize ?? 120;
-    const fontFamily = this.config.fontFamily ?? '"FZZJ-LJDKXKF", serif';
+    const fontFamily = this.config.fontFamily ?? '"CustomKai", serif';
     const color = resolveColor(this.config.color ?? '$text', this.palette);
 
     const style = new PIXI.TextStyle({
