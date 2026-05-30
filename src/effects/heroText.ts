@@ -6,16 +6,6 @@ import { BaseEffect } from './base';
 import type { UpdateContext } from '../core/types';
 import { resolveColor } from '../core/types';
 import myCustomFontUrl from './FangZhengZiJi-LvJianDeXingKaiFanTi-1.ttf';
-
-export class HeroText extends BaseEffect {
-  readonly name = 'heroText';
-  private textObj!: PIXI.Text;
-  private initialRotation = 0;
-
-  private displayedText = '';
-  private pendingText = '';
-  private textAlpha = 1;
-  private fadeState: 'idle' | 'fadeOut' | 'fadeIn' = 'idle';
   if (typeof window !== 'undefined') {
   const fontName = 'CustomKai';
   if (!document.getElementById('dynamic-font-kai')) {
@@ -32,6 +22,17 @@ export class HeroText extends BaseEffect {
     document.head.appendChild(style);
   }
 }
+
+
+export class HeroText extends BaseEffect {
+  readonly name = 'heroText';
+  private textObj!: PIXI.Text;
+  private initialRotation = 0;
+
+  private displayedText = '';
+  private pendingText = '';
+  private textAlpha = 1;
+  private fadeState: 'idle' | 'fadeOut' | 'fadeIn' = 'idle';
 
   protected setup(): void {
     const text = this.config._userText ?? this.config.text ?? '';
