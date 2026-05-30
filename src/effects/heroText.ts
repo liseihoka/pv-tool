@@ -19,7 +19,7 @@ export class HeroText extends BaseEffect {
   protected setup(): void {
     const text = this.config._userText ?? this.config.text ?? '';
     const fontSize = this.config.fontSize ?? 120;
-    const fontFamily = this.config.fontFamily ?? '"FangZhengZiJi-LvJianDeXingKaiFanTi", serif';
+    const fontFamily = this.config.fontFamily ?? '"FZZJ-LJDKXKF", serif';
     const color = resolveColor(this.config.color ?? '$text', this.palette);
 
     const style = new PIXI.TextStyle({
