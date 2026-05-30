@@ -114,7 +114,7 @@ export function resolveColor(color: string, palette: ColorPalette): string {
   }
   if (color.startsWith('$')) {
     const key = color.slice(1) as keyof ColorPalette;
-    return palette[key] || '#000000';
+    return palette[key] || '#ffffff';
   }
   return color;
 }
