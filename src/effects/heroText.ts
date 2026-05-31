@@ -4,7 +4,7 @@
 import * as PIXI from 'pixi.js';
 import { BaseEffect } from './base';
 import type { UpdateContext } from '../core/types';
-import { resolveColor } from '../core/types';
+
 import myCustomFontUrl from '../FangZhengZiJi-LvJianDeXingKaiFanTi-1.ttf';
   if (typeof window !== 'undefined') {
   const fontName = 'CustomKai';
